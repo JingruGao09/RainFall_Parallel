@@ -101,7 +101,8 @@ void minNeighbors(
       } else {
         cout << " no Division" << endl;
         auto p = make_pair(i, j);
-        neighbors[p].clear();
+        // neighbors[p].clear();
+        neighbors.erase(p);
         // no division
       }
     }
