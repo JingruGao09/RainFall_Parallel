@@ -4,19 +4,24 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+
 using namespace std;
+
+
 class Landscape {
 private:
   int dimention;
   int abs_rate;
   int drops;
   string elevation_file;
+  int wet_points; // N * N 
 
-  vector<vector<int>> rainFall;
-  unordered_map<pair<int, int>, vector<int>, hash_pair> neighbors;
-  vector<vector<int>> land_drops;
-  vector<vector<int>> update_matrix;
-  vector<vector<int>> land_absorb;
+  vector<vector<int>> rainFall; // matrix to record the height of each point
+  unordered_map<pair<int, int>, vector<int>, hash_pair> neighbors; // adjecency list to record each point's min neighbors
+  vector<vector<int>> land_drops; // matrix to record current drops value on each point
+  vector<vector<int>> update_matrix; // matrix to record the value that needed to update to each point
+  vector<vector<int>> land_absorb; // matrix to record the value of obsorbtion for each point
 
 public:
   landscape() {}
@@ -58,10 +63,12 @@ public:
         for (int d = 0; d < 4; d++) {
           int x = i + dirs[d][0];
           int y = j + dirs[d][1];
-          if (x < 0 || x >= n || y < 0 || y >= n)
+          if (x < 0 || x >= n || y < 0 || y >= n) {
             continue;
-          if (minRain < rainFall[x][y])
+	  }
+          if (minRain < rainFall[x][y]) {
             continue;
+	  }
           if (minRain > rainFall[x][y]) {
             minRain = rainFall[x][y];
             auto p = make_pair(i, j);
@@ -119,5 +126,6 @@ public:
 
   bool isDry() {
     // check whether all the drops are absorbed
+    return wet_points == 0;
   }
 };
