@@ -15,26 +15,33 @@ int main(int argc, char **argv) {
   int P = atoi(argv[1]); //# of parallel threads to use
   int M = atoi(argv[2]); //# of simulation time steps during which a rain drop
   // will fall on each landscape point
-  int A = atoi(argv[3]); // absorption rate
+  string A_str(argv[3]); // absorption rate
+  double A = stod(A_str);
   int N = atoi(argv[4]); // dimension of the landscape
 
   cout << P << "," << M << "," << A << "," << N << endl;
+
+
   string elevation_file = argv[5];
   Landscape *landscape = new Landscape(N, A, M, elevation_file);
   int timesteps = 0;
 
+  landscape->printRainfall();
+  /*  
   // start timpstamp
   while ( !landscape->isDry() ) {
     landscape->getUpdates();
     landscape->updateDrops();
     timesteps++;
   }
- 
+  */
   // end timpstamp
-
+  
   // print output
 
-  cout << " " << endl;
+  cout << "Rainfall simulation completed in " << timesteps << " time steps"  << endl;
+
+  cout << "The number of raindrops absorbed at each point: " << endl;
   landscape->getAbsorb();
   
    /*
@@ -47,6 +54,6 @@ int main(int argc, char **argv) {
   }
   */
   //./rainfall [P] 10 0.25 4 sample_4x4.in
-
+  delete landscape;
   return EXIT_SUCCESS;
 }
