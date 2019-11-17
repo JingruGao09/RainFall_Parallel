@@ -1,31 +1,15 @@
-#include "landscape.hpp"
+#include "landscape.h"
 
 using namespace std;
 
 
-class Landscape {
-private:
-  int dimention;
-  int abs_rate;
-  int drops;
-  string elevation_file;
-  int wet_points; // N * N 
+Landscape::Landscape(int dim, int abs, int d, string f)
+  : dimention(dim), abs_rate(abs), drops(d), elevation_file(f) {
+  getMatrix();
+  getAdjList();
+}
 
-  vector<vector<int>> rainFall; // matrix to record the height of each point
-  unordered_map<pair<int, int>, vector<int>, hash_pair> neighbors; // adjecency list to record each point's min neighbors
-  vector<vector<int>> land_drops; // matrix to record current drops value on each point
-  vector<vector<int>> update_matrix; // matrix to record the value that needed to update to each point
-  vector<vector<int>> land_absorb; // matrix to record the value of obsorbtion for each point
-
-public:
-  Landscape() {}
-  Landscaoe(int dim, int abs, int d, string f)
-      : dimention(dim), abs_rate(abs), drops(d), elevation_file(f) {
-    getMatrix();
-    getAdjList();
-  }
-
-  void getMatrix() {
+void Landscape::getMatrix() {
     ifstream in(elevation_file.c_str());
     if (!in) {
       cerr << "Cannot open the File : " << elevation_file << endl;
@@ -44,7 +28,7 @@ public:
     // read from the file and put into vector<vector> matrix
   }
 
-  void getAdjList() {
+  void Landscape::getAdjList() {
     // from matrix get all higher point's lowest neighbor
     cout << "start" << endl;
     vector<vector<int>> dirs = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
@@ -101,25 +85,24 @@ public:
     }
   }
 
-  void getAbsorb() {
+  void Landscape::getAbsorb() {
     // print std, final result
   }
 
-  void getUpdates() {
+  void Landscape::getUpdates() {
     // for each iteration, generate the update matrix for each point
   }
 
-  void updateDrops() {
-    // update each point for land_drops from update_matrix;
-  }
+void Landscape::updateDrops() {
+  // update each point for land_drops from update_matrix;
+}
 
-  bool isRaining() {
-    // check whether has raining
-    return drops != 0;
-  }
+bool Landscape::isRaining() {
+  // check whether has raining
+  return drops != 0;
+}
 
-  bool isDry() {
-    // check whether all the drops are absorbed
-    return wet_points == 0;
-  }
-};
+bool Landscape::isDry() {
+  // check whether all the drops are absorbed
+  return wet_points == 0;
+}

@@ -22,15 +22,22 @@ class Landscape {
   string elevation_file;
   int wet_points; // N * N 
 
+
+  struct hash_pair {
+    size_t operator()(const pair<int, int> &p) const {
+      auto hash1 = hash<int>{}(p.first);
+      auto hash2 = hash<int>{}(p.second);
+      return hash1^hash2;
+    }
+  };
   vector<vector<int> > rainFall; // matrix to record the height of each point
   unordered_map<pair<int, int>, vector<int>, hash_pair> neighbors; // adjecency list to record each point's min neighbors
   vector<vector<int> > land_drops; // matrix to record current drops value on each point
   vector<vector<int> > update_matrix; // matrix to record the value that needed to update to each point
   vector<vector<int> > land_absorb; // matrix to record the value of obsorbtion for each point
 public:
-  public:
-  Landscape() {}
-  Landscape(int dim, int abs, int d, int f);
+  Landscape();
+  Landscape(int dim, int abs, int d, string f);
   ~Landscape();
   
   void getMatrix();

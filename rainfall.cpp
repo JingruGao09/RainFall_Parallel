@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "landscape.hpp"
+#include "landscape.h"
 
 
 int main(int argc, char **argv) {

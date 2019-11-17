@@ -1,13 +1,12 @@
-SOURCES=$(wildcard *.cpp)
-CPPFLAGS=-ggdb3 -Wall -Werror -pedantic -std=gnu++11
-OBJS=$(patsubst %.cpp, %.o, $(SOURCES))
+CFLAGS=-std=c++11 -Wall -Werror -pedantic -ggdb3
+OBJS=rainfall.o landscape.o
 PROGRAM=rainfall
 
 $(PROGRAM): rainfall.o landscape.o
-	g++ $(CPPFLAGS) -o $(PROGRAM) $(OBJS)
+	g++ -o $(PROGRAM) $(CFLAGS) rainfall.o landscape.o
 
-%.o: %.cpp landscape.hpp
-	g++ $(CPPFLAGS) -c $<
+%.o: %.cpp landscape.h
+	g++ -c $(CFLAGS) $<
 
 clean:
 	rm -f $(OBJS) $(PROGRAM) *~
