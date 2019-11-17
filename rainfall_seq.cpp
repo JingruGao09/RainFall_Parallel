@@ -9,6 +9,25 @@
 #include <vector>
 using namespace std;
 
+class RainFallDrop {
+private:
+  string elevation_file;
+  vector<vector<int>> rainFall;
+  unordered_map<pair<int, int>, vector<int>, hash_pair> neighbors;
+  struct hash_pair {
+    // template <class T1, class T2>
+    size_t operator()(const pair<int, int> &p) const {
+      auto hash1 = hash<int>{}(p.first);
+      auto hash2 = hash<int>{}(p.second);
+      return hash1 ^ hash2;
+    }
+  };
+
+public:
+  void rainFallMatrix();
+  void minNeighbors();
+};
+
 void rainFallMatrix(vector<vector<int>> &rainFall, string elevation_file) {
   ifstream in(elevation_file.c_str());
   if (!in) {
