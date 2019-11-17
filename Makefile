@@ -5,8 +5,8 @@ PROGRAM=rainfall
 $(PROGRAM): rainfall.o landscape.o
 	g++ -o $(PROGRAM) $(CFLAGS) rainfall.o landscape.o
 
-%.o: %.cpp landscape.hpp
-	g++ -c $(CFALGS) $<
+%.o: %.cpp landscape.h
+	g++ -c $(CFLAGS) $<
 
 clean:
 	rm -f $(OBJS) $(PROGRAM) *~
