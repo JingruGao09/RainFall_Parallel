@@ -1,10 +1,4 @@
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <unordered_map>
-#include <vector>
-
+#include "landscape.hpp"
 
 using namespace std;
 
@@ -24,9 +18,9 @@ private:
   vector<vector<int>> land_absorb; // matrix to record the value of obsorbtion for each point
 
 public:
-  landscape() {}
-  landscaoe(int d, int abs, int d, int f)
-      : dimention(d), abs_rate(abs), drops(d), elevation_file(f) {
+  Landscape() {}
+  Landscaoe(int dim, int abs, int d, string f)
+      : dimention(dim), abs_rate(abs), drops(d), elevation_file(f) {
     getMatrix();
     getAdjList();
   }

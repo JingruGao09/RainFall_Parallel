@@ -1,9 +1,12 @@
-CFLAGS=-Wall -Werror -std=c++11 -pedantic -ggdb3
-OBJS=rainfall_seq.o
-PROGRAM=rainfall_seq
+CFLAGS=-std=c++11 -Wall -Werror -pedantic -ggdb3
+OBJS=rainfall.o landscape.o
+PROGRAM=rainfall
 
-$(PROGRAM): rainfall_seq.cpp
-	g++ $(CFLAGS) -o $(PROGRAM) rainfall_seq.cpp
+$(PROGRAM): rainfall.o landscape.o
+	g++ -o $(PROGRAM) $(CFLAGS) rainfall.o landscape.o
+
+%.o: %.cpp landscape.hpp
+	g++ -c $(CFALGS) $<
 
 clean:
 	rm -f $(OBJS) $(PROGRAM) *~

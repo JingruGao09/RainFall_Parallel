@@ -3,6 +3,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "landscape.hpp"
+
 
 int main(int argc, char **argv) {
   if (argc < 6) {
@@ -19,11 +21,23 @@ int main(int argc, char **argv) {
   cout << P << "," << M << "," << A << "," << N << endl;
   string elevation_file = argv[5];
   Landscape *landscape = new Landscape(N, A, M, elevation_file);
-  // vector<vector<int>> rainFall(N);
+  int timesteps = 0;
 
-  //  rainFallMatrix(rainFall, elevation_file);
-  // rainFallSimulation(P, M, A, rainFall);
-  /*
+  // start timpstamp
+  while ( !landscape->isDry() ) {
+    landscape->getUpdates();
+    landscape->updateDrops();
+    timesteps++;
+  }
+ 
+  // end timpstamp
+
+  // print output
+
+  cout << " " << endl;
+  landscape->getAbsorb();
+  
+   /*
   cout << "Done" << endl;
   for (auto line : rainFall) {
     for (auto n : line) {
