@@ -1,11 +1,22 @@
+#include "landscape.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <sys/time.h>
 #include <vector>
-#include "landscape.h"
 
+double calc_time(struct timeval start, struct timeval end) {
+  double start_sec = (double)start.tv_sec * 1000000.0 + (double)start.tv_usec;
+  double end_sec = (double)end.tv_sec * 1000000.0 + (double)end.tv_usec;
 
+  if (end_sec < start_sec) {
+    return 0;
+
+  } else {
+    return end_sec - start_sec;
+  }
+}
 int main(int argc, char **argv) {
   if (argc < 6) {
     cerr << "Not enough commandline argument!\n" << endl;
@@ -21,38 +32,45 @@ int main(int argc, char **argv) {
 
   cout << P << "," << M << "," << A << "," << N << endl;
 
-
   string elevation_file = argv[5];
-  Landscape *landscape = new Landscape(N, A, M, elevation_file);
+  Landscape *landscape = new Landscape(N, M, A, elevation_file);
   int timesteps = 0;
 
   landscape->printRainfall();
-  /*  
+
+  struct timeval start_time, end_time;
+  gettimeofday(&start_time, NULL);
+
   // start timpstamp
-  while ( !landscape->isDry() ) {
+  while (!landscape->isDry() && timesteps < M) {
     landscape->getUpdates();
     landscape->updateDrops();
     timesteps++;
   }
-  */
+
   // end timpstamp
-  
+  gettimeofday(&end_time, NULL);
+  double elapsed_us = calc_time(start_time, end_time);
+  double elapsed_ms = elapsed_us / 1000.0;
+  std::cout << "Time=" << elapsed_ms << " milliseconds" << std::endl;
+
   // print output
 
-  cout << "Rainfall simulation completed in " << timesteps << " time steps"  << endl;
+  cout << "Rainfall simulation completed in " << timesteps << " time steps"
+       << endl;
 
   cout << "The number of raindrops absorbed at each point: " << endl;
   landscape->getAbsorb();
-  
-   /*
-  cout << "Done" << endl;
-  for (auto line : rainFall) {
-    for (auto n : line) {
-      cout << n << " ";
-    }
-    cout << endl;
-  }
-  */
+
+  /*
+ cout << "Done" << endl;
+ for (auto line : rainFall) {
+   for (auto n : line) {
+     cout << n << " ";
+   }
+   cout << endl;
+ }
+ */
   //./rainfall [P] 10 0.25 4 sample_4x4.in
   delete landscape;
   return EXIT_SUCCESS;

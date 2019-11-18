@@ -12,7 +12,6 @@
 #include <vector>
 
 using namespace std;
-
 class Landscape {
 private:
   size_t dimention;

@@ -1,9 +1,9 @@
 #include "landscape.h"
-
 using namespace std;
 
 Landscape::Landscape(int dim, int d, double abs, string f)
-    : dimention(dim), drops(d), abs_rate(abs), elevation_file(f), rainFall(dim),
+    : dimention(dim), drops(d), abs_rate(abs), elevation_file(f),
+      wet_points(dim * dim), rainFall(dim),
       land_drops(dim, vector<double>(dim, 0)),
       update_matrix(dim, vector<double>(dim, 0)),
       land_absorb(dim, vector<double>(dim, 0)) {
@@ -107,16 +107,23 @@ void Landscape::getUpdates() {
       // if raining, get rain
       if (isRaining()) {
         land_drops[i][j] += 1;
+        drops--;
       }
       // absorb by land -> update abs matrix
       if (land_drops[i][j] > abs_rate) {
         land_drops[i][j] -= abs_rate;
         land_absorb[i][j] += abs_rate;
-      } else {
+      } else if (land_drops[i][j] > 0) {
         land_absorb[i][j] += land_drops[i][j];
         land_drops[i][j] = 0;
         wet_points--;
+        if (wet_points == 0) {
+          return;
+        }
+      } else {
+        continue;
       }
+
       // if remaining > 1 && has low neighbor, tickle to the min neighbor
       // update the update_matrix
       if (land_drops[i][j] >= 1) {
@@ -129,15 +136,32 @@ void Landscape::getUpdates() {
           }
           land_drops[i][j] -= 1;
         } // if has neighbor
-      }   // if could trickle
-    }     // j
-  }       // i
+      }
+      // if could trickle
+    } // j
+  }   // i
 }
 
 void Landscape::updateDrops() {
   // update each point for land_drops from update_matrix;
   for (size_t i = 0; i < dimention; i++) {
     for (size_t j = 0; j < dimention; j++) {
+      /*
+      if (land_drops[i][j] >= 1) {
+        pair<int, int> curr = make_pair(i, j);
+        if (neighbors.find(curr) != neighbors.end()) {
+          double trickle_drop = 1 / neighbors[curr].size();
+          const vector<int> &curr_neighbor = neighbors[curr];
+          for (size_t n = 0; n < curr_neighbor.size(); n++) {
+            update_matrix[curr_neighbor[0]][curr_neighbor[1]] += trickle_drop;
+            land_drops[curr_neighbor[0]][curr_neighbor[1]] += trickle_drop;
+          }
+          land_drops[i][j] -= 1;
+
+        } // if has neighbor
+      }
+
+      */
       land_drops[i][j] += update_matrix[i][j];
       update_matrix[i][j] = 0;
     }
@@ -151,6 +175,8 @@ bool Landscape::isRaining() {
 
 bool Landscape::isDry() {
   // check whether all the drops are absorbed
+  cout << "wet_points " << wet_points << endl;
+  // return true;
   return wet_points == 0;
 }
 
