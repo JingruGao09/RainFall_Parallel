@@ -30,31 +30,31 @@ int main(int argc, char **argv) {
   double A = stod(A_str);
   int N = atoi(argv[4]); // dimension of the landscape
 
-  cout << P << "," << M << "," << A << "," << N << endl;
+  cout <<"P "<< P << ", M " << M << ", A " << A << ", N " << N << endl;
 
   string elevation_file = argv[5];
   Landscape *landscape = new Landscape(N, M, A, elevation_file);
   int timesteps = 0;
 
-  landscape->printRainfall();
-
+  
   struct timeval start_time, end_time;
   gettimeofday(&start_time, NULL);
 
-  // start timpstamp
-  while (!landscape->isDry() && timesteps < M) {
+  while (true) {
     landscape->getUpdates();
     landscape->updateDrops();
     timesteps++;
+    if (landscape->isDry()) {
+      //&& timesteps > M) {
+      break;
+    }
   }
 
-  // end timpstamp
+
   gettimeofday(&end_time, NULL);
   double elapsed_us = calc_time(start_time, end_time);
-  double elapsed_ms = elapsed_us / 1000.0;
-  std::cout << "Time=" << elapsed_ms << " milliseconds" << std::endl;
-
-  // print output
+  double elapsed_ms = elapsed_us / 1000000.0;
+  std::cout << "Time=" << elapsed_ms << " seconds" << std::endl;
 
   cout << "Rainfall simulation completed in " << timesteps << " time steps"
        << endl;
@@ -62,16 +62,6 @@ int main(int argc, char **argv) {
   cout << "The number of raindrops absorbed at each point: " << endl;
   landscape->getAbsorb();
 
-  /*
- cout << "Done" << endl;
- for (auto line : rainFall) {
-   for (auto n : line) {
-     cout << n << " ";
-   }
-   cout << endl;
- }
- */
-  //./rainfall [P] 10 0.25 4 sample_4x4.in
   delete landscape;
   return EXIT_SUCCESS;
 }
