@@ -1,6 +1,9 @@
 # RainFall_Parallel
-simulation of rain fall and apply parallelism
-Complete the neighbors configuration
+### Simulation of rain fall and apply parallelism
+  1. Complete the neighbors configuration
+  2. Complete traversal and correctly output the absorbtion matrix
 
-TO DO:
-traversal & calculate
+
+### TO DO:
+  1. Seq Code is extremely slow. 100 times slower than example output file.
+  2. Parallelism to improve the performance.
