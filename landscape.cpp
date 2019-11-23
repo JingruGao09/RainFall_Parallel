@@ -32,7 +32,7 @@ void Landscape::getMatrix() {
   }
 }
 
-int Landscape::getMinNeighbors(int& i, int& j, int& minRain) {
+int Landscape::getMinNeighbors(int &i, int &j, int &minRain) {
   int cnt = 0;
   vector<int> dirs = {-1, 0, 1, 0, -1};
   for (int d = 0; d < 4; d++) {
@@ -69,7 +69,7 @@ void Landscape::getAdjList() {
         continue;
       } else {
         auto p = make_pair(i, j);
-	neighbors.erase(p);
+        neighbors.erase(p);
       }
     }
   }
@@ -78,7 +78,7 @@ void Landscape::getAdjList() {
 void Landscape::getAbsorb() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
-      cout << land_absorb[i][j] << " ";
+      cout << land_absorb[i][j] << "\t";
     }
     cout << endl;
   }
@@ -86,7 +86,7 @@ void Landscape::getAbsorb() {
 
 int Landscape::getRainingTimes() { return count; }
 
-void Landscape::absorbRainDrop(int& i, int& j) {
+void Landscape::absorbRainDrop(int &i, int &j) {
   if (land_drops[i][j] >= abs_rate) {
     land_drops[i][j] -= abs_rate;
     land_absorb[i][j] += abs_rate;
@@ -96,16 +96,18 @@ void Landscape::absorbRainDrop(int& i, int& j) {
   }
 }
 
-void Landscape::trickleNeighbors(const pair<int, int>& curr) {
-  
+void Landscape::trickleNeighbors(const pair<int, int> &curr) {
+
   int size = neighbors[curr].size();
-  double trickle_drop = min(1.0, land_drops[curr.first][curr.second]) / (double)size;
+  double trickle_drop =
+      min(1.0, land_drops[curr.first][curr.second]) / (double)size;
   for (auto k : neighbors[curr]) {
     int x = k.first;
     int y = k.second;
     update_matrix[x][y] += trickle_drop;
   }
-  land_drops[curr.first][curr.second] -= min(1.0, land_drops[curr.first][curr.second]);  
+  land_drops[curr.first][curr.second] -=
+      min(1.0, land_drops[curr.first][curr.second]);
 }
 
 // for each iteration, generate the update matrix for each point
@@ -113,12 +115,12 @@ void Landscape::getUpdates() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
       if (isRaining()) {
-	land_drops[i][j] += 1.0;
+        land_drops[i][j] += 1.0;
       }
       absorbRainDrop(i, j);
       const auto curr = make_pair(i, j);
       if (neighbors.count(curr)) {
-	trickleNeighbors(curr);
+        trickleNeighbors(curr);
       }
     }
   }
@@ -132,7 +134,7 @@ void Landscape::updateDrops() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
       if (update_matrix[i][j] == 0) {
-	continue;
+        continue;
       }
       land_drops[i][j] += update_matrix[i][j];
       update_matrix[i][j] = 0;
@@ -140,9 +142,7 @@ void Landscape::updateDrops() {
   }
 }
 
-bool Landscape::isRaining() {
-  return drops != 0;
-}
+bool Landscape::isRaining() { return drops != 0; }
 
 bool Landscape::isDry() {
   if (land_drops == comp_empty) {
@@ -155,7 +155,7 @@ bool Landscape::isDry() {
 void Landscape::printRainfall() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
-      cout << rainFall[i][j] << " ";
+      cout << rainFall[i][j] << "\t";
     }
     cout << endl;
   }
@@ -164,7 +164,7 @@ void Landscape::printRainfall() {
 void Landscape::printLandDrops() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
-      cout << land_drops[i][j] << " ";
+      cout << land_drops[i][j] << "\t";
     }
     cout << endl;
   }
@@ -181,7 +181,7 @@ void Landscape::printUpdateMatrix() {
 void Landscape::printAbsorbMatrix() {
   for (int i = 0; i < dimension; i++) {
     for (int j = 0; j < dimension; j++) {
-      cout << land_absorb[i][j] << " ";
+      cout << land_absorb[i][j] << "\t";
     }
     cout << endl;
   }

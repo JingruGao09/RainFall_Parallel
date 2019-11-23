@@ -1,4 +1,4 @@
-CFLAGS=-std=c++11 -Wall -Werror -pedantic -ggdb3
+CFLAGS=-std=c++11 -Wall -Werror -pedantic -ggdb3 -O3
 OBJS=rainfall.o landscape.o
 PROGRAM=rainfall
 
