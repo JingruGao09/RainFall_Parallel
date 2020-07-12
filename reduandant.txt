@@ -1,2 +1,5 @@
 just for learning and testing git merge
-ijdlfjsijdfojfowje
+ijdlfjsijdfojfowj
+adding new lines
+now
+
