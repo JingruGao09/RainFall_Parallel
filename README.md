@@ -7,3 +7,5 @@
 ### TO DO:
   1. Seq Code is extremely slow. 100 times slower than example output file.
   2. Parallelism to improve the performance.
+
+## The Project is complete, new version need to be uploaded.
