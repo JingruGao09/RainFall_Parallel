@@ -1,1 +1,3 @@
 just for learning and testing git merge
+adding new lines
+now
